@@ -10,13 +10,8 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('nuevo')
-  newEndpoint() {
-    return 'yo soy nuevo';
-  }
-
-  @Get('/ruta/')
+  @Get('tasks')
   hello() {
-    return 'con /sas/';
+    return this.appService.getTasks();
   }
 }

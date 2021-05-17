@@ -8,6 +8,9 @@ import { ConfigModule } from '@nestjs/config';
 import { enviroments } from './enviroments';
 import config from './config';
 import * as Joi from 'joi';
+import { MongoClient } from 'mongodb';
+
+
 
 @Module({
   imports: [
@@ -29,16 +32,16 @@ import * as Joi from 'joi';
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: 'TASKS',
-      useFactory: async (http: HttpService) => {
-        const tasks = await http
-          .get('https://jsonplaceholder.typicode.com/todos')
-          .toPromise();
-        return tasks.data;
-      },
-      inject: [HttpService],
-    },
+    // {
+    //   provide: 'TASKS',
+    //   useFactory: async (http: HttpService) => {
+    //     const tasks = await http
+    //       .get('https://jsonplaceholder.typicode.com/todos')
+    //       .toPromise();
+    //     return tasks.data;
+    //   },
+    //   inject: [HttpService],
+    // },
   ],
 })
 export class AppModule {}
