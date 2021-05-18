@@ -8,9 +8,6 @@ import { ConfigModule } from '@nestjs/config';
 import { enviroments } from './enviroments';
 import config from './config';
 import * as Joi from 'joi';
-import { MongoClient } from 'mongodb';
-
-
 
 @Module({
   imports: [

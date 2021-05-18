@@ -5,7 +5,11 @@ import {
   IsUrl,
   IsNotEmpty,
   IsPositive,
+  IsOptional,
+  Min,
+  ValidateIf,
 } from 'class-validator';
+import { FilterDto } from 'src/common/filter-dto';
 
 export class CreateProductDto {
   @IsString()
@@ -31,3 +35,13 @@ export class CreateProductDto {
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
+
+export class FilterProductsDto extends FilterDto {
+  @IsOptional()
+  @Min(0)
+  readonly minPrice: number;
+
+  @ValidateIf((params) => params.minPrice)
+  @IsPositive()
+  readonly maxPrice: number;
+}

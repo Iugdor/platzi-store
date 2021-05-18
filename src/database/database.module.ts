@@ -1,18 +1,13 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { MongoClient } from 'mongodb';
+import { MongooseModule } from '@nestjs/mongoose';
 import config from 'src/config';
 
 @Global()
 @Module({
-  providers: [
-    {
-      provide: 'API_KEY',
-      useValue: '45465',
-    },
-    {
-      provide: 'MONGO',
-      useFactory: async (configService: ConfigType<typeof config>) => {
+  imports: [
+    MongooseModule.forRootAsync({
+      useFactory: (configService: ConfigType<typeof config>) => {
         // Get the mongoDb configuration
         const {
           connection,
@@ -22,17 +17,24 @@ import config from 'src/config';
           port,
           dbName,
         } = configService.mongo;
-        // Set the uri
-        const uri = `${connection}://${user}:${password}@${host}:${port}/?authSource=admin&readPreference=primary`;
-        // Create the client
-        const client = new MongoClient(uri, { useUnifiedTopology: true });
-        await client.connect();
-        const database = client.db(dbName);
-        return database;
+        return {
+          uri: `${connection}://${host}:${port}`,
+          user,
+          pass: password,
+          dbName,
+          useFindAndModify: false,
+        };
       },
       inject: [config.KEY],
+    }),
+  ],
+
+  providers: [
+    {
+      provide: 'API_KEY',
+      useValue: '45465',
     },
   ],
-  exports: ['API_KEY', 'MONGO'],
+  exports: ['API_KEY', MongooseModule],
 })
 export class DatabaseModule {}
