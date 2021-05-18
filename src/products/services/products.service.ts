@@ -22,6 +22,6 @@ export class ProductsService extends DatabaseService<
     if (minPrice && maxPrice) {
       filters.price = { $gte: minPrice, $lte: maxPrice };
     }
-    return super.findAll(params, filters);
+    return super.findAll(params, filters, 'brand');
   }
 }

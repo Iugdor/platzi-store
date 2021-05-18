@@ -23,6 +23,7 @@ import config from 'src/config';
           pass: password,
           dbName,
           useFindAndModify: false,
+          useCreateIndex: true,
         };
       },
       inject: [config.KEY],

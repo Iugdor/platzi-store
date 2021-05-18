@@ -8,8 +8,11 @@ import {
   IsOptional,
   Min,
   ValidateIf,
+  ValidateNested,
+  IsMongoId,
 } from 'class-validator';
 import { FilterDto } from 'src/common/filter-dto';
+import { CreateCategoryDto } from './category.dto';
 
 export class CreateProductDto {
   @IsString()
@@ -32,6 +35,14 @@ export class CreateProductDto {
   @IsUrl()
   @IsNotEmpty()
   readonly image: string;
+
+  @ValidateNested()
+  @IsNotEmpty()
+  readonly category: CreateCategoryDto;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  readonly brand: string;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

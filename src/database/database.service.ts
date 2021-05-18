@@ -15,19 +15,19 @@ export class DatabaseService<T extends Document, C, F extends FilterDto> {
     }
   }
 
-  async findAll(params?: F, filters?: FilterQuery<T>) {
+  findAll(params?: F, filters?: FilterQuery<T>, modelToPopulate?: string) {
+    let query = this.dataModel.find(filters);
     if (params) {
       const { limit, offset } = params;
-      return await this.dataModel
-        .find(filters)
-        .skip(offset * limit)
-        .limit(limit)
-        .exec();
+      query = query.skip(offset * limit).limit(limit);
     }
-    return await this.dataModel.find().exec();
+    if (modelToPopulate) {
+      query = query.populate(modelToPopulate);
+    }
+    return query.exec();
   }
 
-  async findOne(id: string) {
+  findOne(id: string) {
     const model = this.dataModel.findById(id).exec();
     if (!model) {
       throw new NotFoundException(`#${this.modelName} #${id} not found`);
