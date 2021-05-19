@@ -11,7 +11,6 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { FilterDto } from 'src/common/filter-dto';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 
 import {
