@@ -24,7 +24,7 @@ export class BrandsController {
 
   @Get()
   getProducts(@Query() params: FilterDto) {
-    return this.brandsService.findAll(params);
+    return this.brandsService.findAll({ params: params });
   }
 
   @Get(':id')

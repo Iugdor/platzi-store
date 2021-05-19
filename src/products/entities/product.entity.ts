@@ -27,7 +27,7 @@ export class Product extends Document {
   )
   category: Record<string, any>;
 
-  @Prop({ type: Types.ObjectId, ref: Brand.name })
+  @Prop({ type: Types.ObjectId, ref: Brand.name, required: true })
   brand: Brand | Types.ObjectId;
 }
 

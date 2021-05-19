@@ -15,20 +15,27 @@ export class DatabaseService<T extends Document, C, F extends FilterDto> {
     }
   }
 
-  findAll(params?: F, filters?: FilterQuery<T>, modelToPopulate?: string) {
+  findAll(options?: {
+    params?: F;
+    filters?: FilterQuery<T>;
+    modelsToPopulate?: (keyof T)[];
+  }) {
+    if (!options) return this.dataModel.find();
+
+    const { params, filters, modelsToPopulate } = options;
     let query = this.dataModel.find(filters);
     if (params) {
       const { limit, offset } = params;
       query = query.skip(offset * limit).limit(limit);
     }
-    if (modelToPopulate) {
-      query = query.populate(modelToPopulate);
+    if (modelsToPopulate && modelsToPopulate.length > 0) {
+      modelsToPopulate.forEach((model) => (query = query.populate(model)));
     }
     return query.exec();
   }
 
-  findOne(id: string) {
-    const model = this.dataModel.findById(id).exec();
+  async findOne(id: string) {
+    const model = await this.dataModel.findById(id).exec();
     if (!model) {
       throw new NotFoundException(`#${this.modelName} #${id} not found`);
     }

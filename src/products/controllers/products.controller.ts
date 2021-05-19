@@ -28,7 +28,7 @@ export class ProductsController {
 
   @Get()
   getProducts(@Query() params: FilterProductsDto) {
-    return this.productsService.findAll(params);
+    return this.productsService.findAll({ params: params });
   }
 
   @Get(':productId')
